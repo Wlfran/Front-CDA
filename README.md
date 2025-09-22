@@ -13,6 +13,7 @@ En el proyecto encontrarás un archivo `.bak` adjunto.
 Restaura la base de datos en tu SQL Server.
 
 ### 2. Configuración del Backend  
+- link Back: https://github.com/Wlfran/Back-CDA
 - Abre el archivo `appsettings.json` del backend.  
 - Modifica la **cadena de conexión** con los datos de tu servidor SQL Server.
 
