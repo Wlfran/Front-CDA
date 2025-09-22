@@ -13,8 +13,9 @@ En el proyecto encontrarás un archivo `.bak` adjunto.
 Restaura la base de datos en tu SQL Server.
 
 ### 2. Configuración del Backend  
-- link Back: https://github.com/Wlfran/Back-CDA
-- Abre el archivo `appsettings.json` del backend.  
+- Link Back: https://github.com/Wlfran/Back-CDA
+- Abre el archivo `appsettings.json` del backend.
+- Ir a la carpeta MODELS y en el archivo PruebaTecnica.cs cambiar la cadena de conecxion en la funcion OnConfiguring
 - Modifica la **cadena de conexión** con los datos de tu servidor SQL Server.
 
 ### 3. Ejecución del Frontend  
