@@ -1,0 +1,30 @@
+.form-container {
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 48%;
+  margin-right: 4%;
+}
+
+.half-width:last-child {
+  margin-right: 0;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #3f51b5;
+}

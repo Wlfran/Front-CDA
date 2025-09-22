@@ -1,0 +1,35 @@
+<div class="container">
+    <h2>Listado de Usuarios</h2>
+    <button mat-raised-button color="primary" (click)="abrirCrearUsuario()">
+        <mat-icon>person_add</mat-icon> Crear Usuario
+    </button>
+
+    <button mat-raised-button color="accent" [routerLink]="['/dashboard']">
+        <mat-icon>arrow_back</mat-icon> Volver al Dashboard
+    </button>
+
+    <table class="table table-striped mt-3" *ngIf="usuarios.length > 0; else noData">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let u of usuarios">
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.rol }}</td>
+                <td>{{ u.disponible ? 'Sí' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ng-template #noData>
+        <p>No hay usuarios registrados.</p>
+    </ng-template>
+</div>

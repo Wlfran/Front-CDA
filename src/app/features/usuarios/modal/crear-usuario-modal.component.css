@@ -1,0 +1,26 @@
+mat-form-field {
+  margin-bottom: 15px;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+mat-dialog-title {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+mat-dialog-actions {
+  margin-top: 15px;
+}
+
+button[mat-raised-button] {
+  min-width: 120px;
+}
+
+.w-100 {
+  width: 100%;
+}

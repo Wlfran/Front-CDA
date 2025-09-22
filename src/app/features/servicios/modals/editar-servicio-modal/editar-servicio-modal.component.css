@@ -1,0 +1,50 @@
+/* --- Contenedor principal del modal --- */
+::ng-deep .mat-dialog-container {
+  padding: 24px 32px;
+  border-radius: 16px;
+  background: #f9f9fb; /* Fondo suave */
+  max-height: 90vh;
+  overflow-y: auto; /* Scroll interno si el contenido se extiende */
+  box-sizing: border-box;
+}
+
+/* --- Ajuste entre el título y el contenido --- */
+::ng-deep .mat-mdc-dialog-title + .mat-mdc-dialog-content {
+  padding-top: 0 !important;
+}
+
+::ng-deep .mat-mdc-dialog-content .mat-form-field:first-of-type {
+  margin-top: 16px; /* Separación balanceada para el primer campo (Observaciones) */
+}
+
+/* --- Layout general del modal --- */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaciado uniforme entre secciones */
+}
+
+/* --- Filas de inputs --- */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+/* --- Inputs de diferentes anchos --- */
+.full-width {
+  flex: 1 1 100%;
+}
+
+.half-width {
+  flex: 1 1 calc(50% - 10px); /* Dos columnas con buen espaciado */
+}
+
+/* --- Acciones del modal (botones) --- */
+::ng-deep .mat-dialog-actions {
+  padding: 16px 0 0 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

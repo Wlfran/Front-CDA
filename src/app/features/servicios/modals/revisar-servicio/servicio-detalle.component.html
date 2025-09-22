@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>Detalle del Servicio</h2>
+
+<mat-dialog-content class="dialog-content">
+    <p><strong>Cliente:</strong> {{ data.clienteNombre }}</p>
+    <p><strong>Vehículo:</strong> {{ data.vehiculoPlaca }} - {{ data.vehiculoMarca }}</p>
+    <p><strong>Fecha Solicitud:</strong> {{ data.fechaSolicitud | date:'short' }}</p>
+    <p><strong>Estado:</strong> {{ data.estado }}</p>
+
+    <div class="foto-container" *ngIf="fotos.length > 0">
+        <h3>Fotos del servicio</h3>
+        <div class="fotos-grid">
+            <div class="foto-item" *ngFor="let foto of fotos">
+                <img [src]="'https://localhost:44375' + foto.url" alt="Foto del servicio" class="foto-vehiculo">
+                <!-- <button mat-icon-button color="warn" (click)="eliminarFoto(foto)">
+                    <mat-icon>delete</mat-icon>
+                </button> -->
+            </div>
+        </div>
+    </div>
+
+    <p *ngIf="fotos.length === 0">No hay fotos registradas para este servicio.</p>
+
+
+    <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Evaluación de daños</mat-label>
+        <textarea matInput [(ngModel)]="evaluacion" rows="3"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Repuesto</mat-label>
+        <mat-select [(ngModel)]="repuestos">
+            <mat-option *ngFor="let r of listaRepuestos" [value]="r.id">
+                {{ r.nombre }} - ${{ r.precioUnitario }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Cantidad</mat-label>
+        <input matInput type="number" [(ngModel)]="cantidad" min="1" value="1">
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Tiempo estimado (horas)</mat-label>
+        <input matInput type="number" [(ngModel)]="tiempo">
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Costo mano de obra ($)</mat-label>
+        <input matInput type="number" [(ngModel)]="costo">
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cerrar()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

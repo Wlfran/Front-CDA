@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Editar Servicio</h2>
+<br>
+<mat-dialog-content class="modal-content" [formGroup]="servicioForm">
+  <div class="form-row">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput formControlName="observaciones" rows="4"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Fecha Programada</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fechaProgramada">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="half-width" appearance="outline">
+      <mat-label>Presupuesto Tope</mat-label>
+      <input matInput type="number" formControlName="presupuestoTope">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

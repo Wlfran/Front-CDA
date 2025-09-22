@@ -1,0 +1,92 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Nueva Cita de Servicio</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="servicioForm" (ngSubmit)="onSubmit()">
+        <!-- Cliente (Obligatorio) -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Cliente <span class="required">*</span></mat-label>
+            <mat-select formControlName="clienteId">
+              <mat-option *ngFor="let cliente of clientes" [value]="cliente.id">
+                {{ cliente.nombre }} - {{ cliente.nit }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="servicioForm.get('clienteId')?.hasError('required')">
+              Debe seleccionar un cliente
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Vehículo (Obligatorio) -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Vehículo <span class="required">*</span></mat-label>
+            <mat-select formControlName="vehiculoId" [disabled]="vehiculos.length === 0">
+              <mat-option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id">
+                {{ vehiculo.placa }} - {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="vehiculos.length === 0 && servicioForm.get('clienteId')?.value">
+              No hay vehículos registrados para este cliente
+            </mat-hint>
+            <mat-error *ngIf="servicioForm.get('vehiculoId')?.hasError('required')">
+              Debe seleccionar un vehículo
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Fecha Programada y Presupuesto (Opcionales) -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Fecha Programada (Opcional)</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fechaProgramada">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Presupuesto Tope (Opcional)</mat-label>
+            <input matInput type="number" formControlName="presupuestoTope" min="0">
+          </mat-form-field>
+        </div>
+
+        <!-- Observaciones (Opcionales) -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Observaciones (Opcional)</mat-label>
+            <textarea matInput formControlName="observaciones" maxlength="1000" rows="4"></textarea>
+            <mat-hint>Describa el problema o servicio requerido</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Fotos (Opcionales) -->
+        <div class="form-row">
+          <div class="file-upload">
+            <label for="fotos">Fotos del Vehículo (Opcional):</label>
+            <input type="file" id="fotos" multiple accept="image/*" (change)="onFileSelected($event)">
+            <mat-hint>Seleccione fotos para la valoración previa</mat-hint>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <mat-card-actions align="end">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" type="submit" 
+                  [disabled]="!servicioForm.valid || loading">
+            <ng-container *ngIf="!loading; else loadingTpl">Crear Cita</ng-container>
+            <ng-template #loadingTpl>
+              <mat-spinner diameter="20"></mat-spinner>
+              Creando...
+            </ng-template>
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

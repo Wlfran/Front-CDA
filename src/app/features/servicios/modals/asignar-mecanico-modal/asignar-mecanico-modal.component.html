@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Asignar Mecánico</h2>
+<mat-dialog-content>
+  <div *ngIf="loading">Cargando mecánicos...</div>
+  <mat-nav-list *ngIf="!loading && mecanicos.length > 0">
+    <mat-list-item *ngFor="let m of mecanicos">
+      {{ m.nombre }}
+      <button mat-button color="primary" (click)="asignar(m)">Asignar</button>
+    </mat-list-item>
+  </mat-nav-list>
+  <p *ngIf="!loading && mecanicos.length === 0">No hay mecánicos disponibles</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+</mat-dialog-actions>

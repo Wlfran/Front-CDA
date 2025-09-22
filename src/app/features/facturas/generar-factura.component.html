@@ -1,0 +1,151 @@
+<div class="form-container" *ngIf="servicio">
+  <div class="detail-header">
+    <div class="header-info">
+      <h1>Generar Factura - Servicio #{{ servicio.id }}</h1>
+      <div class="breadcrumb">
+        <a routerLink="/servicios">Servicios</a> / 
+        <a [routerLink]="['/servicios', servicio.id]">Servicio #{{ servicio.id }}</a> / 
+        Generar Factura
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-button (click)="volver()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <!-- Información del Servicio -->
+  <mat-card class="info-section">
+    <mat-card-header>
+      <mat-card-title>Información del Servicio</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Cliente ID:</div>
+          <div class="value">{{ servicio.clienteId }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Vehículo ID:</div>
+          <div class="value">{{ servicio.vehiculoId || 'N/A' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Mecánico ID:</div>
+          <div class="value">{{ servicio.mecanicoId || 'N/A' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Estado:</div>
+          <div class="value">{{ servicio.estado || 'N/A' }}</div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Repuestos Utilizados -->
+  <mat-card class="info-section">
+    <mat-card-header>
+      <mat-card-title>Repuestos Utilizados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="table-container" *ngIf="repuestosServicio.length > 0; else noRepuestos">
+        <table mat-table [dataSource]="repuestosServicio" class="full-width-table">
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef>Descripción</th>
+            <td mat-cell *matCellDef="let repuesto">{{ repuesto.repuesto?.nombre }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Cantidad</th>
+            <td mat-cell *matCellDef="let repuesto" class="text-center">{{ repuesto.cantidad }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="precioUnitario">
+            <th mat-header-cell *matHeaderCellDef class="text-right">Precio Unit.</th>
+            <td mat-cell *matCellDef="let repuesto" class="text-right">{{ repuesto.precioUnitario | currency }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef class="text-right">Total</th>
+            <td mat-cell *matCellDef="let repuesto" class="text-right">
+              {{ (repuesto.cantidad * repuesto.precioUnitario) | currency }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['descripcion', 'cantidad', 'precioUnitario', 'total']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['descripcion', 'cantidad', 'precioUnitario', 'total'];"></tr>
+        </table>
+
+        <div class="subtotal-row">
+          <strong>Subtotal Repuestos: {{ subtotalRepuestos | currency }}</strong>
+        </div>
+      </div>
+
+      <ng-template #noRepuestos>
+        <p class="no-data">No se registraron repuestos para este servicio.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Mano de Obra y Totales -->
+  <mat-card class="info-section">
+    <mat-card-header>
+      <mat-card-title>Mano de Obra y Totales</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="facturaForm">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Valor Mano de Obra</mat-label>
+            <input matInput type="number" formControlName="manoObra" min="0" step="0.01">
+            <mat-error *ngIf="facturaForm.get('manoObra')?.hasError('required')">
+              El valor de mano de obra es requerido
+            </mat-error>
+            <mat-error *ngIf="facturaForm.get('manoObra')?.hasError('min')">
+              El valor debe ser mayor o igual a 0
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+
+      <div class="totals-section">
+        <div class="total-row">
+          <span class="label">Subtotal Repuestos:</span>
+          <span class="value">{{ subtotalRepuestos | currency }}</span>
+        </div>
+        <div class="total-row">
+          <span class="label">Mano de Obra:</span>
+          <span class="value">{{ facturaForm.get('manoObra')?.value | currency }}</span>
+        </div>
+        <div class="total-row subtotal">
+          <span class="label">Subtotal:</span>
+          <span class="value">{{ subtotal | currency }}</span>
+        </div>
+        <div class="total-row">
+          <span class="label">IVA (8%):</span>
+          <span class="value">{{ iva | currency }}</span>
+        </div>
+        <div class="total-row total">
+          <span class="label">TOTAL:</span>
+          <span class="value">{{ total | currency }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="volver()" [disabled]="loading">
+        Cancelar
+      </button>
+      <button mat-raised-button color="primary" (click)="generarFactura()" 
+              [disabled]="!facturaForm.valid || loading">
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        {{ loading ? 'Generando...' : 'Generar Factura' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="loading-container" *ngIf="loading && !servicio">
+  <mat-spinner></mat-spinner>
+</div>

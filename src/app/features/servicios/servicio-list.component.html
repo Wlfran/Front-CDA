@@ -1,0 +1,129 @@
+<div class="servicios-container">
+  <!-- Encabezado -->
+  <div class="header">
+    <div>
+      <h1><mat-icon>build_circle</mat-icon> Gestión de Servicios</h1>
+      <p class="subtitle">Administra, asigna mecánicos y controla repuestos fácilmente</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button color="accent" routerLink="/dashboard">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </button>
+      <button mat-raised-button color="primary" routerLink="/servicios-forms">
+        <mat-icon>add_circle</mat-icon>
+        Nueva Cita
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="servicios-card">
+    <mat-card-content>
+
+      <div class="filter-section">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar servicios</mat-label>
+          <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter($event)"
+            placeholder="Cliente, placa, mecánico..." />
+          <button *ngIf="searchValue" matSuffix mat-icon-button (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="table-container">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+        <table mat-table [dataSource]="dataSource" matSort class="styled-table">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+            <td mat-cell *matCellDef="let s"> {{ s.id }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cliente">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+            <td mat-cell *matCellDef="let s"> {{ s.clienteNombre }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="vehiculo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehículo </th>
+            <td mat-cell *matCellDef="let s">
+              <mat-icon class="vehiculo-icon">directions_car</mat-icon>
+              {{ s.vehiculoPlaca }} - {{ s.vehiculoMarca }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fechaSolicitud">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+            <td mat-cell *matCellDef="let s">
+              {{ s.fechaSolicitud | date:'shortDate' }} <br />
+              <small class="hora">{{ s.fechaSolicitud | date:'shortTime' }}</small>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let s">
+              <mat-chip [ngClass]="'chip-' + s.estado.toLowerCase()">
+                {{ s.estado }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="mecanico">
+            <th mat-header-cell *matHeaderCellDef> Mecánico </th>
+            <td mat-cell *matCellDef="let s">
+              <mat-icon *ngIf="s.mecanicoNombre; else noAsig">engineering</mat-icon>
+              {{ s.mecanicoNombre || 'No asignado' }}
+              <ng-template #noAsig>
+                <span class="no-asignado">No asignado</span>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let s" class="acciones-cell">
+
+              <button mat-stroked-button color="primary" (click)="verDetalle(s)" *ngIf="s.estado != 'EnRevision'"
+                matTooltip="Gestionar repuestos y costos del servicio">
+                <mat-icon>build</mat-icon>
+                <span>Gestionar</span>
+              </button>
+
+              <button *ngIf="rol === 'Admin'" mat-stroked-button color="accent" (click)="abrirEditarServicio(s)"
+                matTooltip="Editar fecha y observaciones del servicio">
+                <mat-icon>edit_calendar</mat-icon>
+                <span>Editar</span>
+              </button>
+
+              <button mat-stroked-button color="warn" (click)="abrirAsignarMecanico(s)"
+                *ngIf="rol === 'Admin' && s.estado === 'Solicitado'"
+                matTooltip="Asignar mecánico disponible">
+                <mat-icon>engineering</mat-icon>
+                <span>Asignar</span>
+              </button>
+
+
+              <button *ngIf="rol != 'Cliente' && s.estado === 'EnRevision'" mat-stroked-button color="primary" (click)="finalizarServicio(s)"
+                matTooltip="Finalizar este servicio y generar factura">
+                <mat-icon>done</mat-icon>
+                <span>Finalizar Servicio</span>
+              </button>
+
+
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,73 @@
+/* Contenedor general */
+.form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+/* Separación entre filas */
+.form-row {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Campos de formulario que ocupan todo el ancho */
+.full-width {
+  width: 100%;
+}
+
+/* Campos de formulario que ocupan la mitad del ancho */
+.half-width {
+  flex: 1 1 calc(50% - 0.5rem);
+}
+
+/* Marca visual para campos obligatorios */
+.required {
+  color: #d32f2f; /* rojo de material design para errores */
+  margin-left: 2px;
+}
+
+/* Archivo de fotos */
+.file-upload input[type="file"] {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* Card del formulario */
+mat-card {
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones */
+mat-card-actions {
+  margin-top: 1rem;
+}
+
+button[mat-raised-button] {
+  min-width: 120px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+mat-spinner {
+  margin-right: 0.5rem;
+}
+
+/* Resaltar errores */
+mat-error {
+  font-size: 0.85rem;
+  color: #d32f2f;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 600px) {
+  .half-width {
+    flex: 1 1 100%;
+  }
+}
